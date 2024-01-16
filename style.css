@@ -37,32 +37,32 @@ body, html {
   height: 65px;
   gap: 50px;
 }
-.button, 
-.buttonTwo,
+.buttonDel, 
+.buttonAdd,
 .input{
  border: 1px solid black;
  border-radius: 5px;
  height: 60px;
  font-family: 'Instrument Serif', serif;
 }
-.button, 
-.buttonTwo{
+.buttonDel, 
+.buttonAdd{
  background-color: grey;
  color: rgb(182, 182, 182);
  width: 150px;
  font-size: 20px;
 }
 
-.button:hover, 
-.buttonTwo:hover,
+.buttonDel:hover, 
+.buttonAdd:hover,
 .taskButton:hover,
 .taskSubButton:hover{
   background-color: rgb(146, 123, 155);
 }
 .taskButton,
 .taskSubButton,
-.button, 
-.buttonTwo{
+.buttonDel, 
+.buttonAdd{
   transition: 0.3s linear;
   cursor: pointer;
 }
@@ -92,6 +92,7 @@ body, html {
   border-radius: 10px;
   color: #cecdcd;
   border: 1px solid black;
+  font-size: 30px;
 }
 .taskDiv{
   height: 60px;
@@ -114,11 +115,9 @@ body, html {
 }
 .taskSubButton{
   margin: 10px 0 40px 55px;
-  font-size: 40px;
 }
 .taskButton{
   margin: 50px 20px 0 0;
-  font-size: 30px;
 }
 .date{
   width: 110px;

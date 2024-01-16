@@ -3,22 +3,34 @@ root.className = ('root')
 
 const header = document.createElement('header')
 header.className = ('header')
+
 const taskConteiner = document.createElement('div')
 taskConteiner.className = ('taskConteiner')
 
 root.append(header, taskConteiner)
 
-const button = document.createElement('button')
-button.innerText = ('Delete All')
-button.className = ('button')
-const input = document.createElement('input')
-input.className = ('input')
-input.placeholder = ('Enter todo ...')
-const buttonTwo = document.createElement('button')
-buttonTwo.innerText = ('Add')
-buttonTwo.className = ('buttonTwo')
+const createButton = (type, text, className) => {
+  const button = document.createElement('button');
+  button.className = className;
+  button.type = type;
+  button.textContent = text;
+  return button
+}
+const buttonDel = createButton('button', 'Delete All', 'buttonDel')
+const buttonAdd = createButton('button', 'Add', 'buttonAdd')
+const taskButton = createButton('button','✓', 'taskButton' )
+const taskSubButton = createButton('button', '✗', 'taskSubButton')
 
-header.append(button, input, buttonTwo)
+const createInput = (type, className, placeholder) => {
+  const input = document.createElement('input');
+  input.type = type;
+  input.className = className;
+  input.placeholder = placeholder;
+  return input
+}
+const input = createInput('input', 'input', 'Enter todo ...')
+
+header.append(buttonDel, input, buttonAdd)
 
 const taskWindow = document.createElement('div')
 taskWindow.className = ('taskWindow')
@@ -27,9 +39,6 @@ taskSubConteiner.className = ('taskSubConteiner')
 
 taskConteiner.append(taskWindow, taskSubConteiner)
 
-const taskButton = document.createElement('button')
-taskButton.className = ('taskButton')
-taskButton.innerHTML = ('&#10003')
 const taskDiv =  document.createElement('div')
 taskDiv.className = ('taskDiv')
 
@@ -41,9 +50,6 @@ taskParagraph.innerText = ('Go shoping')
 
 taskDiv.append(taskParagraph)
 
-const taskSubButton = document.createElement('button')
-taskSubButton.innerHTML = ('&#215;')
-taskSubButton.className = ('taskSubButton')
 const date = document.createElement('span')
 date.className = ('date')
 date.innerText = ('15.01.2024')
