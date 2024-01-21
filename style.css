@@ -13,7 +13,7 @@ body, html {
  body,
 .header,
 .input,
-.taskConteiner,
+.taskContainer,
 .taskWindow,
 .taskParagraph,
 .date{
@@ -76,7 +76,7 @@ body, html {
  font-size: 20px;
  text-align: center;
 }
-.taskConteiner{
+.taskContainer{
   width: 600px;
   background: none;
   border: 3px solid rgb(137, 136, 136);
@@ -104,7 +104,7 @@ body, html {
   background-color: #cecdcd;
   color: rgb(100, 100, 100);
 }
-.dateConteiner{
+.dateContainer{
   width: 92px;
   display: flex;
   height: 35px;

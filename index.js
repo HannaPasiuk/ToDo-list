@@ -4,10 +4,10 @@ root.className = ('root')
 const header = document.createElement('header')
 header.className = ('header')
 
-const taskConteiner = document.createElement('div')
-taskConteiner.className = ('taskConteiner')
+const taskContainer = document.createElement('div')
+taskContainer.className = ('taskContainer')
 
-root.append(header, taskConteiner)
+root.append(header, taskContainer)
 
 const createButton = (type, text, className) => {
   const button = document.createElement('button');
@@ -34,10 +34,10 @@ header.append(buttonDel, input, buttonAdd)
 
 const taskWindow = document.createElement('div')
 taskWindow.className = ('taskWindow')
-const taskSubConteiner = document.createElement('div')
-taskSubConteiner.className = ('taskSubConteiner')
+const SubContainer = document.createElement('div')
+SubContainer.className = ('SubContainer')
 
-taskConteiner.append(taskWindow, taskSubConteiner)
+taskContainer.append(taskWindow, SubContainer)
 
 const taskDiv =  document.createElement('div')
 taskDiv.className = ('taskDiv')
@@ -46,7 +46,7 @@ taskWindow.append(taskButton, taskDiv)
 
 const taskParagraph = document.createElement('p')
 taskParagraph.className = ('taskParagraph')
-taskParagraph.innerText = ('Go shoping')
+taskParagraph.innerText = ('Go shopping')
 
 taskDiv.append(taskParagraph)
 
@@ -54,7 +54,4 @@ const date = document.createElement('span')
 date.className = ('date')
 date.innerText = ('15.01.2024')
 
-taskSubConteiner.append(taskSubButton, date)
-
-
-
+SubContainer.append(taskSubButton, date)
