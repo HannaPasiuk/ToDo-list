@@ -7,8 +7,8 @@ header.className = ('header')
 const taskContainer = document.createElement('div')
 taskContainer.className = ('taskContainer')
 
-root.append(header, taskContainer)
 
+//function create_button
 const createButton = (type, text, className) => {
   const button = document.createElement('button');
   button.className = className;
@@ -16,11 +16,13 @@ const createButton = (type, text, className) => {
   button.textContent = text;
   return button
 }
+//add button
 const buttonDel = createButton('button', 'Delete All', 'buttonDel')
 const buttonAdd = createButton('button', 'Add', 'buttonAdd')
 const taskButton = createButton('button','✓', 'taskButton' )
 const taskSubButton = createButton('button', '✗', 'taskSubButton')
 
+//function create_input
 const createInput = (type, className, placeholder) => {
   const input = document.createElement('input');
   input.type = type;
@@ -28,30 +30,32 @@ const createInput = (type, className, placeholder) => {
   input.placeholder = placeholder;
   return input
 }
+//add input
 const input = createInput('input', 'input', 'Enter todo ...')
 
-header.append(buttonDel, input, buttonAdd)
 
 const taskWindow = document.createElement('div')
 taskWindow.className = ('taskWindow')
+
 const SubContainer = document.createElement('div')
 SubContainer.className = ('SubContainer')
 
-taskContainer.append(taskWindow, SubContainer)
-
 const taskDiv =  document.createElement('div')
 taskDiv.className = ('taskDiv')
-
-taskWindow.append(taskButton, taskDiv)
 
 const taskParagraph = document.createElement('p')
 taskParagraph.className = ('taskParagraph')
 taskParagraph.innerText = ('Go shopping')
 
-taskDiv.append(taskParagraph)
-
 const date = document.createElement('span')
 date.className = ('date')
 date.innerText = ('15.01.2024')
 
+
+//append
+header.append(buttonDel, input, buttonAdd)
 SubContainer.append(taskSubButton, date)
+root.append(header, taskContainer)
+taskWindow.append(taskButton, taskDiv)
+taskDiv.append(taskParagraph)
+taskContainer.append(taskWindow, SubContainer)
