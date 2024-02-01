@@ -1,14 +1,32 @@
 const root = document.getElementById('root')
 root.className = ('root')
 
-const header = document.createElement('header')
+const header = document.createElement('form')
 header.className = ('header')
+
 
 const taskContainer = document.createElement('div')
 taskContainer.className = ('taskContainer')
 
-root.append(header, taskContainer)
+const tasks = getData("todo");
+//local storage
 
+
+
+function getData(key){
+  return JSON.parse(localStorage.getItem(key) || '[]');
+}
+
+function setData(){
+  localStorage.setItem("todo", JSON.stringify(tasks))
+}
+
+function removeData(){
+  localStorage.removeItem("todo")
+}
+
+
+//function create_button
 const createButton = (type, text, className) => {
   const button = document.createElement('button');
   button.className = className;
@@ -16,11 +34,12 @@ const createButton = (type, text, className) => {
   button.textContent = text;
   return button
 }
-const buttonDel = createButton('button', 'Delete All', 'buttonDel')
-const buttonAdd = createButton('button', 'Add', 'buttonAdd')
-const taskButton = createButton('button','✓', 'taskButton' )
-const taskSubButton = createButton('button', '✗', 'taskSubButton')
+//add button
+const buttonDelAll = createButton('button', 'Delete All', 'buttonDelAll')
+const buttonAdd = createButton('submit', 'Add', 'buttonAdd')
 
+
+//function create_input
 const createInput = (type, className, placeholder) => {
   const input = document.createElement('input');
   input.type = type;
@@ -28,30 +47,193 @@ const createInput = (type, className, placeholder) => {
   input.placeholder = placeholder;
   return input
 }
-const input = createInput('input', 'input', 'Enter todo ...')
+//add input
+const input = createInput('text', 'input', 'Enter todo ...')
 
-header.append(buttonDel, input, buttonAdd)
 
-const taskWindow = document.createElement('div')
-taskWindow.className = ('taskWindow')
-const SubContainer = document.createElement('div')
-SubContainer.className = ('SubContainer')
 
-taskContainer.append(taskWindow, SubContainer)
 
-const taskDiv =  document.createElement('div')
-taskDiv.className = ('taskDiv')
 
-taskWindow.append(taskButton, taskDiv)
+//render task
 
-const taskParagraph = document.createElement('p')
-taskParagraph.className = ('taskParagraph')
-taskParagraph.innerText = ('Go shopping')
+function renderTask () {
+  taskContainer.innerHTML = ''; 
+  if(tasks.length > 0){
+    tasks.forEach( task => {
+    const taskItem = createTaskItem(task.task, task.isCompleted, task.id, task.date);
+    taskContainer.appendChild(taskItem);
+  }) 
+ }
+ else{
+    const renderText = document.createElement('p')
+    renderText.className = 'renderText'
+    renderText.textContent = 'No tasks '  
+    taskContainer.appendChild(renderText)
+    
+  }
+}
 
-taskDiv.append(taskParagraph)
 
-const date = document.createElement('span')
-date.className = ('date')
-date.innerText = ('15.01.2024')
 
-SubContainer.append(taskSubButton, date)
+//add task
+function addTask(){
+  const taskInput = input.value;
+  const task = {
+    id: self.crypto.randomUUID(),
+    task: taskInput,
+    isCompleted: false,
+    date: new Date().toLocaleDateString(),
+    checkboxListener,
+    removeOneTaskItem,
+}
+  tasks.push(task);
+  input.value = ``; 
+ 
+}
+
+header.addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  addTask();
+  setData(tasks)
+  renderTask()
+  
+})
+
+
+
+
+
+
+//function create tasks cards
+
+function createTaskItem (task, isCompleted, id, date) {
+  //elements
+  const taskItem = document.createElement('div');
+  taskItem.className = ('taskItem');
+  taskContainer.append(taskItem)
+  
+
+  const taskWindow = document.createElement('div');
+  taskWindow.className = ('taskWindow');
+  const subContainer = document.createElement('div');
+  subContainer.className = ('subContainer');
+  taskItem.append(taskWindow, subContainer)
+  
+ 
+  const taskButton = document.createElement('label');
+  taskButton.className = ('taskButton');
+  taskWindow.append(taskButton)
+
+    const taskButtonContent = document.createElement('span');
+  taskButtonContent.textContent = ('✓');
+  taskButton.append(taskButtonContent)
+
+  const taskDiv = document.createElement('div');
+  taskDiv.className = ('taskDiv');
+   taskWindow.append(taskDiv)
+
+
+  const taskDelButton = createButton('button', '✗', 'taskDelButton');
+  subContainer.append(taskDelButton)
+  taskDelButton.addEventListener('click', removeOneTaskItem); 
+
+//checkbox
+  const taskCheckbox = createInput('checkbox', 'checkbox');
+  taskButton.append(taskCheckbox)
+  taskCheckbox.checked = isCompleted;
+
+
+ taskCheckbox.addEventListener('click', () => {
+  if (taskCheckbox.checked){
+    taskParagraph.style.textDecoration = 'line-through';
+    taskDiv.style.backgroundColor = 'lightgrey';
+    taskItem.style.backgroundColor = 'grey'
+  }
+  else{
+    taskParagraph.style.textDecoration = 'none';
+    taskDiv.style.backgroundColor = 'white';
+    taskItem.style.backgroundColor = 'inherit';
+  }
+ } )
+
+  //paragraph
+  const taskParagraph = document.createElement('p');
+  taskParagraph.className = ('taskParagraph');
+  taskDiv.append(taskParagraph)
+  taskParagraph.id = id;
+  taskParagraph.textContent = input.value;
+
+  // data
+  const currentDate = document.createElement('time');
+  currentDate.textContent = date;
+  subContainer.append(currentDate)
+  taskParagraph.id = id;
+  taskParagraph.textContent = task;
+
+  return taskItem
+}
+
+
+
+
+
+
+
+
+
+//remove one tasks
+const  removeOneTaskItem = (event) => {
+  if(confirm('Delete task?')){
+    const taskId = event.target.closest('.taskItem').id;
+    const item = tasks.findIndex((task) => task.id === taskId)
+    tasks.splice(item);
+    setData();
+    renderTask()
+  }
+else return
+
+}
+
+
+//toggle
+function checkboxListener(taskButton) {
+  taskButton.addEventListener("change", (event) => {
+      const identifier = event.currentTarget.closest(".taskItem").id;
+      const task = tasks.find((task) => task.id === identifier);
+      task.isCompleted = !task.isCompleted;
+      setData(tasks);
+      renderTask()
+  });
+}
+
+
+
+//delete all
+function deleteAllTask (){
+  for(i = 0; i < tasks.length; i++){
+  const item =  document.querySelectorAll('.taskItem');
+  tasks.splice(item)
+  }
+}
+buttonDelAll.addEventListener('click', () => {
+  if(tasks.length > 0 && confirm('Are you sure?')){
+    deleteAllTask()
+    setData(tasks)
+    removeData(tasks)
+    renderTask()
+  } 
+  else return
+  
+})
+
+
+
+
+
+
+//append
+header.append(buttonDelAll, input, buttonAdd)
+root.append(header, taskContainer)
+
+renderTask(tasks)
