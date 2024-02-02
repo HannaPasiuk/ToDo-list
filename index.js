@@ -9,10 +9,8 @@ const taskContainer = document.createElement('div')
 taskContainer.className = ('taskContainer')
 
 const tasks = getData("todo");
+
 //local storage
-
-
-
 function getData(key){
   return JSON.parse(localStorage.getItem(key) || '[]');
 }
@@ -21,9 +19,7 @@ function setData(){
   localStorage.setItem("todo", JSON.stringify(tasks))
 }
 
-function removeData(){
-  localStorage.removeItem("todo")
-}
+
 
 
 //function create_button
@@ -83,7 +79,6 @@ function addTask(){
     task: taskInput,
     isCompleted: false,
     date: new Date().toLocaleDateString(),
-    checkboxListener,
     removeOneTaskItem,
 }
   tasks.push(task);
@@ -124,10 +119,12 @@ function createTaskItem (task, isCompleted, id, date) {
   const taskButton = document.createElement('label');
   taskButton.className = ('taskButton');
   taskWindow.append(taskButton)
+  taskButton.addEventListener('click', handlerIsChecked)
 
     const taskButtonContent = document.createElement('span');
   taskButtonContent.textContent = ('✓');
   taskButton.append(taskButtonContent)
+  
 
   const taskDiv = document.createElement('div');
   taskDiv.className = ('taskDiv');
@@ -182,10 +179,11 @@ function createTaskItem (task, isCompleted, id, date) {
 
 
 
-//remove one tasks
+//delete task
+
 const  removeOneTaskItem = (event) => {
   if(confirm('Delete task?')){
-    const taskId = event.target.closest('.taskItem').id;
+    const taskId = event.currentTarget.closest('.taskItem').id;
     const item = tasks.findIndex((task) => task.id === taskId)
     tasks.splice(item);
     setData();
@@ -197,14 +195,23 @@ else return
 
 
 //toggle
-function checkboxListener(taskButton) {
-  taskButton.addEventListener("change", (event) => {
-      const identifier = event.currentTarget.closest(".taskItem").id;
-      const task = tasks.find((task) => task.id === identifier);
-      task.isCompleted = !task.isCompleted;
-      setData(tasks);
-      renderTask()
-  });
+const completedTask = (id, checked) => {
+  const tasks = getData('todo')
+  const updateTask = tasks.map((item) => {
+    if(item.id === id){
+      item.isCompleted = checked
+      return item
+    }
+    else item
+  })
+  setData('todo', updateTask)
+}
+
+ const handlerIsChecked = (event) => {
+  const { target } = event
+  const idItem = target.closest('.taskItem').id
+  const checked = target.isCompleted
+  completedTask(idItem, checked)
 }
 
 
@@ -220,7 +227,6 @@ buttonDelAll.addEventListener('click', () => {
   if(tasks.length > 0 && confirm('Are you sure?')){
     deleteAllTask()
     setData(tasks)
-    removeData(tasks)
     renderTask()
   } 
   else return
